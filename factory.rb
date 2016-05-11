@@ -1,5 +1,5 @@
 class Factory
-  def self.new(*args)
+  def self.new(*args, &block)
       Class.new do
         @@attributes = args
 
@@ -20,6 +20,8 @@ class Factory
         def initialize(*values)
           @@attributes.each_with_index { |attr, i| send("#{attr}=", values[i]) }
         end
+
+        class_eval(&block) if block
       end
   end
 end
@@ -50,3 +52,11 @@ print "Result for 'o.two = 'two': "
 p o.two = 'two'
 print "Result for 'o.two?: "
 p o.two?
+
+puts "Creating class with block 'Customer.new('Dave', '123 Main').greeting':"
+Customer = Factory.new(:name, :address) do
+  def greeting
+    "Hello #{name} from block!"
+  end
+end
+puts Customer.new("Dave", "123 Main").greeting
