@@ -3,17 +3,18 @@ Implementation of 'Factory' class which has the same behavior as 'Struct' class.
 
 ## Usage
 ```
-Customer = Factory.new(:name, :address) do
-  def greeting
-    "Hello #{name} from block!"
-  end
-end
 object = Customer.new("Dave", "123 Main")
-object.greeting               # "Hello Dave from block!"
-object.name                   # "Dave"
-object.name = nil             # nil
-object.name?                  # false
-object.class                  # Customer
+p object.greeting               # "Hello Dave from block!"
+p object.name                   # "Dave"
+p object[:name]                 # "Dave"
+p object["name"]                # "Dave"
+p object[0]                     # "Dave"
+p object.name = nil             # nil
+p object.name?                  # false
+p object.name = "Dave"          # "Dave"
+p object.name?                  # true
+p object.class                  # Customer
+
 object2 = Customer.new("Dave", "123 Main")
-p object == object2           # true
+p object == object2
 ```
