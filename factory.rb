@@ -17,6 +17,10 @@ class Factory
           end
         end
 
+        define_method "==" do |other|
+          args.inject { |eql, var| eql && ( self.send("#{var}") == other.send("#{var}") ) }
+        end
+
         def initialize(*values)
           @@attributes.each_with_index { |attr, i| send("#{attr}=", values[i]) }
         end
@@ -59,4 +63,12 @@ Customer = Factory.new(:name, :address) do
     "Hello #{name} from block!"
   end
 end
-puts Customer.new("Dave", "123 Main").greeting
+object = Customer.new("Dave", "123 Main")
+p object.greeting               # "Hello Dave from block!"
+p object.name                   # "Dave"
+p object.name = nil             # nil
+p object.name?                  # false
+p object.class                  # Customer
+
+object2 = Customer.new("Dave", "123 Main")
+p object == object2

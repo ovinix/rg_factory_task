@@ -14,4 +14,6 @@ object.name                   # "Dave"
 object.name = nil             # nil
 object.name?                  # false
 object.class                  # Customer
+object2 = Customer.new("Dave", "123 Main")
+p object == object2           # true
 ```
