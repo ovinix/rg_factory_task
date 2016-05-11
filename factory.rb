@@ -18,7 +18,23 @@ class Factory
         end
 
         define_method "==" do |other|
-          args.inject { |eql, var| eql && ( self.send("#{var}") == other.send("#{var}") ) }
+          args.inject { |eql, attr| eql && ( self.send("#{attr}") == other.send("#{attr}") ) }
+        end
+
+        define_method "[]" do |attr|
+          if attr.is_a? Fixnum
+            send("#{args[attr]}")
+          else
+            send("#{attr}")
+          end
+        end
+
+        define_method "[]=" do |attr, value|
+          if attr.is_a? Fixnum
+            send("#{args[attr]}=", value)
+          else
+            send("#{attr}=", value)
+          end
         end
 
         def initialize(*values)
@@ -66,8 +82,13 @@ end
 object = Customer.new("Dave", "123 Main")
 p object.greeting               # "Hello Dave from block!"
 p object.name                   # "Dave"
+p object[:name]                 # "Dave"
+p object["name"]                # "Dave"
+p object[0]                     # "Dave"
 p object.name = nil             # nil
 p object.name?                  # false
+p object.name = "Dave"          # "Dave"
+p object.name?                  # true
 p object.class                  # Customer
 
 object2 = Customer.new("Dave", "123 Main")
